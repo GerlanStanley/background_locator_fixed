@@ -11,6 +11,7 @@ import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import android.content.pm.PackageManager
+import android.os.SystemClock
 import io.flutter.FlutterInjector
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.BinaryMessenger
@@ -347,5 +348,15 @@ class IsolateHolderService : MethodChannel.MethodCallHandler, LocationUpdateList
                     }
             }
         }
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent) {
+        /*val restartServiceIntent = Intent(context, IsolateHolderService::class.java).also {
+            it.setPackage(packageName)
+        };*/
+        val restartServicePendingIntent: PendingIntent = PendingIntent.getService(this, 1, rootIntent, PendingIntent.FLAG_ONE_SHOT);
+        applicationContext.getSystemService(Context.ALARM_SERVICE);
+        val alarmService: AlarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager;
+        alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePendingIntent);
     }
 }
