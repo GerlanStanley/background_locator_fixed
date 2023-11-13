@@ -354,6 +354,7 @@ class IsolateHolderService : MethodChannel.MethodCallHandler, LocationUpdateList
         /*val restartServiceIntent = Intent(context, IsolateHolderService::class.java).also {
             it.setPackage(packageName)
         };*/
+        print("onTaskRemoved");
         val restartServicePendingIntent: PendingIntent = PendingIntent.getService(this, 1, rootIntent, PendingIntent.FLAG_ONE_SHOT);
         applicationContext.getSystemService(Context.ALARM_SERVICE);
         val alarmService: AlarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager;
